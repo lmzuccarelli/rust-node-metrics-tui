@@ -1,0 +1,7 @@
+[Unit]
+Description=node-exporter
+
+[Service]
+ExecStart=/home/lzuccarelli/microservices/node_exporter
+Restart=Always
+PIDFile=/tmp/node-exporter_pid
