@@ -40,33 +40,32 @@ get_node_exporter() {
 
 
 deploy_service() {
-
 	for host in "${ARMV7_IP[@]}"; do
 		ssh -i "${PK}" "${USER}@${host}" -t "mkdir -p /home/${USER}/microservices"
 		scp -i "${PK}" "./config/${MS}.service" "${USER}@${host}:/home/${USER}/microservices"
-    scp -i "${PK}" "./bin/node_exporter-1.10.2.linux-armv7/node_exporter" "${USER}@${host}:/home/${USER}/microservices"
-  	ssh -i "${PK}" "${USER}@${host}" -t "sudo cp /home/${USER}/microservices/${MS}.service /etc/systemd/system/"
+		scp -i "${PK}" "./bin/node_exporter-1.10.2.linux-armv7/node_exporter" "${USER}@${host}:/home/${USER}/microservices"
+		ssh -i "${PK}" "${USER}@${host}" -t "sudo cp /home/${USER}/microservices/${MS}.service /etc/systemd/system/"
 	done
 
-  for host in "${AMD64_IP[@]}"; do
+	for host in "${AMD64_IP[@]}"; do
 		ssh -i "${PK}" "${USER}@${host}" -t "mkdir -p /home/${USER}/microservices"
 		scp -i "${PK}" "./config/${MS}.service" "${USER}@${host}:/home/${USER}/microservices"
-    scp -i "${PK}" "./bin/node_exporter-1.10.2.linux-amd64/node_exporter" "${USER}@${host}:/home/${USER}/microservices"
-    # on fedora ensure SELinux executable has bin_t
+		scp -i "${PK}" "./bin/node_exporter-1.10.2.linux-amd64/node_exporter" "${USER}@${host}:/home/${USER}/microservices"
+		# on fedora ensure SELinux executable has bin_t
 		ssh -i "${PK}" "${USER}@${host}" -t "sudo chcon -t bin-t /home/${USER}/microservices/node_exporter"
 		ssh -i "${PK}" "${USER}@${host}" -t "sudo cp /home/${USER}/microservices/${MS}.service /etc/systemd/system/"
 	done
 }
 
 start_service() {
-  # example 
-  # ssh -i ~/.ssh/id_ed25519-lz lzuccarelli@192.168.1.203 -t "sudo systemctl daemon-reload && sudo systemctl start node-exporter.service"
+	# example 
+	# ssh -i ~/.ssh/id_ed25519-lz lzuccarelli@192.168.1.203 -t "sudo systemctl daemon-reload && sudo systemctl start node-exporter.service"
 	for host in "${ARMV7_IP[@]}"; do
-	  ssh -i "${PK}" "${USER}@${host}" -t "sudo systemctl daemon-reload && sudo systemctl start ${MS}.service"
+		ssh -i "${PK}" "${USER}@${host}" -t "sudo systemctl daemon-reload && sudo systemctl start ${MS}.service"
 	done
 
-  for host in "${AMD64_IP[@]}"; do
-	  ssh -i "${PK}" "${USER}@${host}" -t "sudo systemctl daemon-reload && sudo systemctl start ${MS}.service"
+	for host in "${AMD64_IP[@]}"; do
+		ssh -i "${PK}" "${USER}@${host}" -t "sudo systemctl daemon-reload && sudo systemctl start ${MS}.service"
 	done
 }
 
@@ -82,11 +81,11 @@ restart_service() {
 
 stop_service() {
 	for host in "${ARMV7_IP[@]}"; do
-	  ssh -i "${PK}" "${USER}@${AR_HOST[3]}" -t "sudo systemctl daemon-reload && sudo systemctl stop ${MS}.service"
+		ssh -i "${PK}" "${USER}@${AR_HOST[3]}" -t "sudo systemctl daemon-reload && sudo systemctl stop ${MS}.service"
 	done
 
-  for host in "${AMD64_IP[@]}"; do
-	  ssh -i "${PK}" "${USER}@${host}" -t "sudo systemctl daemon-reload && sudo systemctl start ${MS}.service"
+	for host in "${AMD64_IP[@]}"; do
+		ssh -i "${PK}" "${USER}@${host}" -t "sudo systemctl daemon-reload && sudo systemctl start ${MS}.service"
 	done
 }
 

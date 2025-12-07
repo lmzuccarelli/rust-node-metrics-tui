@@ -33,17 +33,17 @@ make build
 
 ## Workflow
 
-- Updatethe specific addresses as required for you setup (inth ./script/infrastructure.sh file)
+- Update the specific addresses as required for your setup (in the ./script/infrastructure.sh file)
 
 - Update the "servers" field in the configs/rust-node-metrics-tui.json file
 
-- Create the service systemd config
+- Create the service systemd config (execute the following script)
 
 ```bash
 ./scripts/infrastructure.sh create_configs
 ```
 
-- Get the node_exporter binay and untar to projects bin directory (change for specific linux version if needed)
+- Get the node_exporter binary and untar to projects bin directory (change for specific linux version if needed)
 
 ```bash
 ./scripts/infrastructure.sh get_node_exporter
@@ -61,7 +61,7 @@ make build
 ./scripts/infrastructure.sh start_service
 ```
 
-- Test the endpoints by using curl
+- Test the endpoints by using curl (change "server" for each node you have deployed to)
 
 ```bash
 curl http://<server>:9100/metrics
